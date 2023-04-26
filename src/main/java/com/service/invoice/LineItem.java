@@ -62,4 +62,7 @@ public class LineItem {
         this.unitPrice = unitPrice;
     }
 
+    public BigDecimal getLineItemTotal() {
+        return unitPrice.multiply(BigDecimal.valueOf(quantity));
+    }
 }

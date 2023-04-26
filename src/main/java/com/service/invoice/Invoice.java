@@ -14,7 +14,7 @@ public class Invoice {
 
     private String client;
 
-    private Long vat;
+    private Long vatRate;
 
     private Date invoiceDate;
 
@@ -22,17 +22,17 @@ public class Invoice {
     @JoinColumn(name = "lineItem_id")
     private List<LineItem> lineItems;
 
-    public Invoice(Long id, String client, Long vat, Date invoiceDate) {
+    public Invoice(Long id, String client, Long vatRate, Date invoiceDate) {
         this.id = id;
         this.client = client;
-        this.vat = vat;
+        this.vatRate = vatRate;
         this.invoiceDate = invoiceDate;
     }
 
     public Invoice(Long id, String client, Long vat, Date invoiceDate, List<LineItem> lineItems) {
         this.id = id;
         this.client = client;
-        this.vat = vat;
+        this.vatRate = vat;
         this.invoiceDate = invoiceDate;
         this.lineItems = lineItems;
     }
@@ -56,12 +56,12 @@ public class Invoice {
         this.client = client;
     }
 
-    public Long getVat() {
-        return vat;
+    public Long getVatRate() {
+        return vatRate;
     }
 
-    public void setVat(Long vat) {
-        this.vat = vat;
+    public void setVatRate(Long vatRate) {
+        this.vatRate = vatRate;
     }
 
     public Date getInvoiceDate() {
@@ -70,5 +70,17 @@ public class Invoice {
 
     public void setInvoiceDate(Date invoiceDate) {
         this.invoiceDate = invoiceDate;
+    }
+
+    public double getSubTotal() {
+        return lineItems.stream().mapToDouble(lineItem -> lineItem.getUnitPrice().doubleValue() * lineItem.getQuantity()).sum();
+    }
+
+    public double getVat() {
+        return getSubTotal() * vatRate / 100;
+    }
+
+    public double getTotal() {
+        return getSubTotal() + getVat();
     }
 }

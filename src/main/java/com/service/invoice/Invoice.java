@@ -2,6 +2,7 @@ package com.service.invoice;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -18,7 +19,7 @@ public class Invoice {
 
     private Date invoiceDate;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "lineItem_id")
     private List<LineItem> lineItems;
 
@@ -72,15 +73,23 @@ public class Invoice {
         this.invoiceDate = invoiceDate;
     }
 
-    public double getSubTotal() {
-        return lineItems.stream().mapToDouble(lineItem -> lineItem.getUnitPrice().doubleValue() * lineItem.getQuantity()).sum();
+    public List<LineItem> getLineItems() {
+        return lineItems;
     }
 
-    public double getVat() {
-        return getSubTotal() * vatRate / 100;
+    public void setLineItems(List<LineItem> lineItems) {
+        this.lineItems = lineItems;
     }
 
-    public double getTotal() {
-        return getSubTotal() + getVat();
+    public BigDecimal getSubTotal() {
+        return lineItems.stream().map(LineItem::getLineItemTotal).reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    public BigDecimal getVat() {
+        return getSubTotal().multiply(new BigDecimal(vatRate)).divide(new BigDecimal(100));
+    }
+
+    public BigDecimal getTotal() {
+        return getSubTotal().add(getVat());
     }
 }

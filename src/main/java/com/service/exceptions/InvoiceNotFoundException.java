@@ -1,4 +1,4 @@
-package com.service.invoice.exceptions;
+package com.service.exceptions;
 
 public class InvoiceNotFoundException extends RuntimeException{
 

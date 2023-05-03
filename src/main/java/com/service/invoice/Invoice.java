@@ -20,7 +20,7 @@ public class Invoice {
     private Date invoiceDate;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "lineItem_id")
+    @JoinColumn(name = "invoice_id")
     private List<LineItem> lineItems;
 
     public Invoice(Long id, String client, Long vatRate, Date invoiceDate) {
@@ -82,14 +82,14 @@ public class Invoice {
     }
 
     public BigDecimal getSubTotal() {
-        return lineItems.stream().map(LineItem::getLineItemTotal).reduce(BigDecimal.ZERO, BigDecimal::add);
+        return lineItems.stream().map(LineItem::getLineItemTotal).reduce(BigDecimal.ZERO, BigDecimal::add).setScale(2, BigDecimal.ROUND_HALF_UP);
     }
 
     public BigDecimal getVat() {
-        return getSubTotal().multiply(new BigDecimal(vatRate)).divide(new BigDecimal(100));
+        return getSubTotal().multiply(new BigDecimal(vatRate)).divide(new BigDecimal(100).setScale(2, BigDecimal.ROUND_HALF_UP));
     }
 
     public BigDecimal getTotal() {
-        return getSubTotal().add(getVat());
+        return getSubTotal().add(getVat().setScale(2, BigDecimal.ROUND_HALF_UP));
     }
 }

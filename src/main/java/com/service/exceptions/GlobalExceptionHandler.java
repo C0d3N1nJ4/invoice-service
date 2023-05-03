@@ -1,4 +1,4 @@
-package com.service.invoice.exceptions;
+package com.service.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;

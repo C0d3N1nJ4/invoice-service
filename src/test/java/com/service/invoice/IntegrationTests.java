@@ -13,7 +13,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 @SpringBootTest
-public class IntegrationTestsInvoiceController {
+public class IntegrationTests {
 
     private MockMvc mockMvc;
 
@@ -66,5 +66,4 @@ public class IntegrationTestsInvoiceController {
                 .andExpect(status().isOk());
 
     }
-
 }

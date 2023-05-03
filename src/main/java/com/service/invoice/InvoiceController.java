@@ -1,6 +1,6 @@
 package com.service.invoice;
 
-import com.service.invoice.exceptions.InvoiceNotFoundException;
+import com.service.exceptions.InvoiceNotFoundException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
